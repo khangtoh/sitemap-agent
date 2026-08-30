@@ -1,0 +1,7 @@
+node_modules/
+*.log
+sitemap.json
+visual.html
+*.checkpoint.json
+examples/*/sitemap.json
+examples/*/visual.html

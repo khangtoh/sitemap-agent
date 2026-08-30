@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"SiteGraph","type":"object","required":["baseDomain","startUrl","generatedAt","crawlMeta","nodes"],"properties":{"baseDomain":{"type":"string"},"startUrl":{"type":"string"},"generatedAt":{"type":"string"},"crawlMeta":{"type":"object"},"nodes":{"type":"object"}}}
