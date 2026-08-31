@@ -96,12 +96,18 @@ from the phase file it points to.
   beyond the file itself).
 
   `bun test` → 23 pass / 0 fail. `specloop check` → structure valid, 10 phases,
-  58/58. Clean bootstrap (`git clone` → `bun install` → `typecheck` → `test` →
-  `check:spec` → documented crawl) reproduced in an empty directory with no
-  undocumented steps — full command list in
-  [Phase 10's findings](10-packaging-github-bootstrap.md#findings--results),
-  including the caveat that the clone source is local, since this repo has no
-  `origin` remote yet.
+  58/58.
+
+  **Bootstrap proven against the published remote.** The repo lives at
+  <https://github.com/khangtoh/sitemap-agent> (default branch `main`).
+  `git clone https://github.com/khangtoh/sitemap-agent.git` → plain
+  `bun install` → `bun run typecheck` (clean) → `bun test` (23/0) →
+  `bun run check:spec` (58/58) → the documented crawl (`Pages: 7 / Max depth:
+  2 / Errors: 0`, exit 0) ran with zero undocumented steps. CI is green on a
+  real `ubuntu-latest` runner:
+  [run 33373779619](https://github.com/khangtoh/sitemap-agent/actions/runs/33373779619).
+  Full command list and the host-specific install caveat are in
+  [Phase 10's findings](10-packaging-github-bootstrap.md#findings--results).
 - Overall phase progress: 58/58 boxes across all 10 phases.
 
 ## Non-goals

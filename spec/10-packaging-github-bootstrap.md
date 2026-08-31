@@ -84,7 +84,30 @@ Phase 09 (tests green) — packaging assumes the product actually works.
   README, not a hidden requirement.
 - Acceptance QA of the visual found and fixed a real filter defect before the
   goal box was flipped — see Phase 07's 2026-08-31 findings.
-- Caveat on the clone source: this repository still has no `origin` remote, so
-  "fresh machine via `git clone`" is proven against a local clone URL. The
-  first push to GitHub should re-run the same sequence against the remote URL;
-  nothing in the sequence depends on the clone being local.
+- Caveat on the clone source (**closed the same day, see below**): at the time
+  the box was first checked this repository had no `origin` remote, so
+  "fresh machine via `git clone`" was proven against a local clone URL.
+
+### 2026-08-31 (later — remote and CI evidence)
+
+- Published to <https://github.com/khangtoh/sitemap-agent> (public, default
+  branch `main`; the local `master` was renamed before the first push).
+- CI has now actually run on a real runner rather than only being declared:
+  [run 33373779619](https://github.com/khangtoh/sitemap-agent/actions/runs/33373779619)
+  → success on `ubuntu-latest`, with plain `bun install` (5 packages),
+  `tsc --noEmit` clean, `23 pass / 0 fail`, and `specloop check` reporting
+  10 phases, 58/58.
+- Bootstrap re-run against the real remote, replacing the local-clone proof:
+  `git clone https://github.com/khangtoh/sitemap-agent.git` → plain
+  `bun install` → `typecheck` clean → `23 pass / 0 fail` → `check:spec` 58/58 →
+  documented crawl on port 8901 → `Pages: 7 / Max depth: 2 / Errors: 0`, exit
+  0, 7 nodes (`/`, `/a`, `/a/1`, `/about`, `/b`, `/b/1`, `/b/2`), no
+  robots-disallowed path present. Zero undocumented steps.
+- The install caveat is narrower than first written and now diagnosed
+  precisely: on this host bun writes some package files as `.l2s.` symlink
+  stubs that resolve into loops, and *which* package it hits varies per
+  install — one run mangled `bun-types/package.json` (`TS2688`), a cold-cache
+  run instead mangled `typescript/lib/lib.es2017.object.d.ts`, producing
+  bogus `TS2550`/`TS7006`/`TS2488` errors. `--backend=copyfile` writes real
+  files and avoids it; the green CI run is the proof it is a host artifact and
+  not a project defect. README note generalized accordingly.

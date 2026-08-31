@@ -113,12 +113,58 @@ checkbox in `spec/README.md`.
 
 - All 58 boxes across 10 phases are checked and the goal acceptance checkbox
   is flipped with recorded evidence. The spec set has no remaining work.
-- Open follow-up for a human: this repo has no `origin` remote. After the
-  first push, re-run the Phase 10 bootstrap sequence against the GitHub URL
-  and confirm the CI workflow is green on a real runner — CI has never
-  actually executed.
+- ~~Open follow-up: no `origin` remote, CI never executed.~~ **Closed later
+  the same day** — see the 2026-08-31 (continued) entry below.
 - `specloop-tasks/bootstrap-preflight-check.md` and the edit to
   `specloop-tasks/README.md` were already in the working tree when this
   session started and are left uncommitted; they target the upstream
   `specloop` CLI, not this repo's spec.
+
+---
+
+## Session: 2026-08-31 (continued, branch `main`)
+
+### Scope of this session
+
+Close the one acceptance follow-up left open: publish to GitHub and prove the
+bootstrap and CI against the real remote instead of a local clone path.
+
+### What got done, in order
+
+1. Confirmed the loop had no eligible task left (58/58, acceptance box checked,
+   only `_TEMPLATE-phase.md` holds unchecked boxes), so this was user-directed
+   work rather than a backlog pick.
+2. Scanned the 59 tracked files before publishing: no credentials, no real
+   email addresses — only `example.com` placeholders in fixtures and tests.
+3. Renamed `master` → `main`, created the public repo
+   <https://github.com/khangtoh/sitemap-agent>, and pushed. `gh` was set to the
+   SSH protocol with no usable key, so the remote was switched to HTTPS with
+   `gh auth setup-git`.
+4. CI run 33373779619 succeeded on `ubuntu-latest` — the workflow's first real
+   execution. Plain `bun install`, clean `tsc --noEmit`, 23/0 tests, 58/58.
+5. Re-ran the full bootstrap from the public HTTPS clone URL: zero
+   undocumented steps, crawl produced the expected 7-node graph.
+6. Ran down the install caveat properly instead of leaving it as a guess.
+
+### Decisions worth keeping
+
+- Repo is **public**, named `sitemap-agent` (matching the package and binary,
+  not the local `sitemapper/` directory), default branch `main`.
+- The `TS2688` install workaround is a **host** artifact, now precisely
+  diagnosed: bun writes some package files as `.l2s.` symlink stubs that
+  resolve into loops, and which package it hits varies per install — a
+  cold-cache run mangled `typescript/lib/lib.es2017.object.d.ts` instead of
+  `bun-types`, giving completely different, misleading errors. The green CI
+  run is the proof it is not a project defect, so the fix stayed in the README
+  as a troubleshooting note rather than becoming a code or tsconfig change.
+
+### State left running / open
+
+- Nothing blocking. 58/58 boxes, goal accepted, remote published, CI green.
+- Still uncommitted and untouched: `specloop-tasks/bootstrap-preflight-check.md`
+  and the edit to `specloop-tasks/README.md`, both pre-existing and aimed at
+  the upstream `specloop` CLI rather than this repo's spec.
+- If the spec set is ever extended, likely candidates named but not scoped:
+  resume/checkpoint end-to-end coverage, a rate-limit/timeout config surface,
+  and a human-readable error summary for crawls.
 

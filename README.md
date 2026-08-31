@@ -74,13 +74,18 @@ bunx --bun @khangtoh/specloop check     # validate the spec structure
 bunx --bun @khangtoh/specloop list-spec # see the ranked backlog
 ```
 
-If `bun run typecheck` reports `TS2688: Cannot find type definition file for
-'bun-types'`, the install landed as links your filesystem can't resolve (seen
-on proot/Android and some network mounts). Reinstall with real files:
+If `bun run typecheck` fails with errors that make no sense for the code —
+`TS2688: Cannot find type definition file for 'bun-types'`, or `TS2550:
+Property 'entries' does not exist on type 'ObjectConstructor'` — the install
+landed as symlinks your filesystem can't resolve (seen on proot/Android and
+some network mounts; which package it hits varies per install). Reinstall with
+real files:
 
 ```bash
 rm -rf node_modules && bun install --backend=copyfile
 ```
+
+CI runs plain `bun install` on `ubuntu-latest` and is unaffected.
 
 Then hand the repo to an agent (Claude Code, Codex, or any CLI-capable
 agent) with instructions to follow `AGENTS.md` and work the loop: take the
