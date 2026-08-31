@@ -64,3 +64,61 @@ Not run in this session: `bun install` against the two devDependencies
 these first on a real machine (see Phase 01 Findings for the caveat on why
 its index row is ✅ despite this). Next unchecked box: top of
 `BACKLOG.md`'s undone list — Phase 02, URL normalization & domain scope.
+
+---
+
+## Session: 2026-08-31 (branch `master`)
+
+### Scope of this session
+
+`specloop` goal run: close Phase 10 and the project's single acceptance
+checkbox in `spec/README.md`.
+
+### What got done, in order
+
+1. Preflight. The 2026-08-30 blocker ("no `.git` metadata or remote clone
+   source") is resolved — the workspace is a real repo on `master`. Still no
+   `origin` remote, so clean-clone proof is against a local clone URL.
+2. Diagnosed `bun run typecheck` failing `TS2688`: on this host `bun install`
+   writes `node_modules/bun-types` as unresolvable link stubs. Reproduced in a
+   clean clone, then fixed with `bun install --backend=copyfile`; `tsc
+   --noEmit` is clean afterwards. Host issue, not a project defect —
+   documented in the README rather than worked around in code.
+3. Replaced the hand-authored `examples/fixture/sitemap.json` with a genuine
+   end-to-end run: added `examples/fixture/site/` (nested paths, robots-
+   disallowed path, off-domain and `mailto:` links, a `utm_source` param, a
+   fragment self-link) and `serve.ts`, crawled it through the CLI over HTTP,
+   and committed what came out. `.gitignore` had been ignoring those very
+   artifacts while they were force-added — added negations.
+4. Removed the tracked `sitemap-agent.zip` (stale scaffold-state snapshot of
+   this repo, referenced by nothing; recoverable from history) and corrected
+   the README, which still claimed the project was scaffold-only.
+5. QA'd `visual.html` in a headless browser instead of trusting the string
+   assertions, and found the filter box emptied the tree for any non-root
+   query. Fixed it (keep ancestors of matches, fade them), extracted the tree
+   builder into a testable `buildTreeHtml`, added regression tests, and
+   re-rendered the committed visual. See Phase 07's 2026-08-31 findings.
+6. Ran the clean-bootstrap sequence in an empty directory and flipped Phase
+   10's remaining boxes and the goal acceptance checkbox with evidence.
+
+### Decisions worth keeping
+
+- Example artifacts are **evidence**, so they are deliberately un-ignored and
+  regenerable via documented commands, not build output.
+- The browser-side tree builder has exactly one implementation, serialized
+  into the page with `toString()`, so a test cannot pass against code the
+  browser does not run — that gap is what hid the filter bug.
+
+### State left running / open
+
+- All 58 boxes across 10 phases are checked and the goal acceptance checkbox
+  is flipped with recorded evidence. The spec set has no remaining work.
+- Open follow-up for a human: this repo has no `origin` remote. After the
+  first push, re-run the Phase 10 bootstrap sequence against the GitHub URL
+  and confirm the CI workflow is green on a real runner — CI has never
+  actually executed.
+- `specloop-tasks/bootstrap-preflight-check.md` and the edit to
+  `specloop-tasks/README.md` were already in the working tree when this
+  session started and are left uncommitted; they target the upstream
+  `specloop` CLI, not this repo's spec.
+

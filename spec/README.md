@@ -67,17 +67,42 @@ from the phase file it points to.
 | 07 | [07-visual-representation.md](07-visual-representation.md) | Self-contained interactive HTML tree/graph view of the site map | ✅ 6/6 | Phase 04, Phase 06 |
 | 08 | [08-cli-interface-config.md](08-cli-interface-config.md) | `sitemap-agent crawl <domain>` command, flags, config file, `--help` | ✅ 6/6 | Phase 05, Phase 06 |
 | 09 | [09-testing-validation.md](09-testing-validation.md) | Unit + mocked-HTTP + fixture-site integration tests, green `bun test` | ✅ 6/6 | Phase 02, Phase 03, Phase 05 |
-| 10 | [10-packaging-github-bootstrap.md](10-packaging-github-bootstrap.md) | README, LICENSE, CI workflow, end-to-end fixture run, clean-clone bootstrap | 🟡 4/6 | Phase 07, Phase 08, Phase 09 |
+| 10 | [10-packaging-github-bootstrap.md](10-packaging-github-bootstrap.md) | README, LICENSE, CI workflow, end-to-end fixture run, clean-clone bootstrap | ✅ 6/6 | Phase 07, Phase 08, Phase 09 |
 
 ## Status
 
-- [ ] **`sitemap-agent crawl <domain>` run against a real or fixture site
+- [x] **`sitemap-agent crawl <domain>` run against a real or fixture site
   produces a valid `sitemap.json` graph and a self-contained `visual.html`,
   with `bun test` and `specloop check` green, and the repo bootstraps cleanly
   via `git clone` → `bun install` → `specloop check` on a fresh machine.** —
-  the single checkbox that means the whole project's goal is met. Record the
-  live evidence (run output, artifact paths) next to it when it flips to `[x]`.
-- Overall phase progress: see individual files.
+  the single checkbox that means the whole project's goal is met.
+
+  **Evidence (2026-08-31).** Crawl, through the CLI, against the fixture site
+  in `examples/fixture/site/` served over real HTTP:
+
+  ```
+  bun run examples/fixture/serve.ts 8787 &
+  bun run bin/sitemap-agent.ts crawl http://127.0.0.1:8787/ \
+    --max-depth 3 --delay-ms 0 --output examples/fixture/sitemap.json --render
+  → Pages: 7 / Max depth: 2 / Errors: 0 / exit 0
+  ```
+
+  Artifacts committed at [`examples/fixture/sitemap.json`](../examples/fixture/sitemap.json)
+  (7 nodes: `/`, `/a`, `/a/1`, `/about`, `/b`, `/b/1`, `/b/2`; robots-disallowed,
+  off-domain, and `mailto:` links absent; `?utm_source=` canonicalized away) and
+  [`examples/fixture/visual.html`](../examples/fixture/visual.html) (graph inlined;
+  opened from `file://` in a headless browser it renders all 7 nodes, filters,
+  and shows per-node detail with zero console errors and no network requests
+  beyond the file itself).
+
+  `bun test` → 23 pass / 0 fail. `specloop check` → structure valid, 10 phases,
+  58/58. Clean bootstrap (`git clone` → `bun install` → `typecheck` → `test` →
+  `check:spec` → documented crawl) reproduced in an empty directory with no
+  undocumented steps — full command list in
+  [Phase 10's findings](10-packaging-github-bootstrap.md#findings--results),
+  including the caveat that the clone source is local, since this repo has no
+  `origin` remote yet.
+- Overall phase progress: 58/58 boxes across all 10 phases.
 
 ## Non-goals
 

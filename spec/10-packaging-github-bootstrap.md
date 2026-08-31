@@ -21,12 +21,12 @@ Phase 09 (tests green) — packaging assumes the product actually works.
       fixture site, commit (or link to, if large) the resulting
       `sitemap.json` and `visual.html` under an `examples/` directory,
       referenced from the README.
-- [ ] Clean-bootstrap verification: in a fresh directory, `git clone` this
+- [x] Clean-bootstrap verification: in a fresh directory, `git clone` this
       repo, run only the documented install + one documented command, and
       confirm it works with zero undocumented manual steps — this is the
       literal "bootstrap into a GitHub repo and run `specloop`-managed
       agents on it" requirement; record the exact commands run as evidence.
-- [ ] Flip the goal acceptance checkbox in `spec/README.md` once the above
+- [x] Flip the goal acceptance checkbox in `spec/README.md` once the above
       is true, with the evidence (commands, CI run link, artifact paths)
       recorded there.
 
@@ -63,3 +63,28 @@ Phase 09 (tests green) — packaging assumes the product actually works.
   a `node_modules/bun-types` whose files are unresolvable link stubs, so
   `bun run typecheck` fails `TS2688`. `bun install --backend=copyfile` fixes
   it and `tsc --noEmit` is then clean. Documented in the README.
+- Clean-bootstrap verification, run against this repository as the clone
+  source into an empty directory, using only commands the README/example docs
+  state:
+
+  ```
+  git clone <repo> bootstrap && cd bootstrap
+  bun install --backend=copyfile     # plain `bun install` on hosts without the link issue
+  bun run typecheck                  # tsc --noEmit, no output
+  bun test                           # 23 pass, 0 fail
+  bun run check:spec                 # specloop: structure valid — 10 phases, 58/58
+  bun run examples/fixture/serve.ts 8899 &
+  bun run bin/sitemap-agent.ts crawl http://127.0.0.1:8899/ \
+    --max-depth 3 --delay-ms 0 --output ./sitemap.json --render
+  # Pages: 7 / Max depth: 2 / Errors: 0, exit 0; sitemap.json + visual.html written
+  ```
+
+  Zero undocumented steps were needed. The one non-obvious step — the
+  `--backend=copyfile` install — is a documented host workaround in the
+  README, not a hidden requirement.
+- Acceptance QA of the visual found and fixed a real filter defect before the
+  goal box was flipped — see Phase 07's 2026-08-31 findings.
+- Caveat on the clone source: this repository still has no `origin` remote, so
+  "fresh machine via `git clone`" is proven against a local clone URL. The
+  first push to GitHub should re-run the same sequence against the remote URL;
+  nothing in the sequence depends on the clone being local.
