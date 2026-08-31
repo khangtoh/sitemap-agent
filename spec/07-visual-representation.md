@@ -42,3 +42,23 @@ it can be regenerated from a past crawl without re-crawling).
 
 - Inline visual renderer and standalone render-command tests pass against the
   local fixture graph; no external visual assets are emitted.
+
+### 2026-08-31
+
+- Reopened during Phase 10 acceptance QA, driving the generated file in a
+  headless browser rather than only asserting on the HTML string. The filter
+  box was broken: `branch()` returned early when the *root* path missed the
+  query, so filtering for any non-root page (`about`, `b/`) emptied the whole
+  tree. The string-level test could not see it.
+- Fixed: a node is kept when it matches **or** any descendant matches, and the
+  ancestors kept purely as context render `.faded`. A query matching nothing
+  now yields an empty tree instead of an unfiltered one.
+- The tree builder moved out of the inline `<script>` string into an exported,
+  self-contained `buildTreeHtml(graph, query)` that is serialized into the page
+  with `toString()`, so tests exercise the same code the browser runs. Two
+  regression tests cover the ancestor-retention and no-match cases.
+- Re-verified in a headless browser on `examples/fixture/visual.html`: 7 nodes
+  render from `file://`, `about` → `/`(faded) + `about`, `b/` → `/`(faded),
+  `b`(faded), `b/1`, `b/2`, `zzz` → empty, clicking a node fills the detail
+  pane and toggles its subtree, zero console errors, and the only network
+  request is the HTML file itself.
