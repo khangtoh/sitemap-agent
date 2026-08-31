@@ -67,7 +67,7 @@ from the phase file it points to.
 | 07 | [07-visual-representation.md](07-visual-representation.md) | Self-contained interactive HTML tree/graph view of the site map | ✅ 6/6 | Phase 04, Phase 06 |
 | 08 | [08-cli-interface-config.md](08-cli-interface-config.md) | `sitemap-agent crawl <domain>` command, flags, config file, `--help` | ✅ 6/6 | Phase 05, Phase 06 |
 | 09 | [09-testing-validation.md](09-testing-validation.md) | Unit + mocked-HTTP + fixture-site integration tests, green `bun test` | ✅ 6/6 | Phase 02, Phase 03, Phase 05 |
-| 10 | [10-packaging-github-bootstrap.md](10-packaging-github-bootstrap.md) | README, LICENSE, CI workflow, end-to-end fixture run, clean-clone bootstrap | 🟡 3/6 | Phase 07, Phase 08, Phase 09 |
+| 10 | [10-packaging-github-bootstrap.md](10-packaging-github-bootstrap.md) | README, LICENSE, CI workflow, end-to-end fixture run, clean-clone bootstrap | 🟡 4/6 | Phase 07, Phase 08, Phase 09 |
 
 ## Status
 

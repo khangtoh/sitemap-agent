@@ -15,10 +15,10 @@ checklist under `spec/NN-*.md` or a process file the loop itself follows.
 
 ## Status
 
-Scaffold-only right now. Phase 01 (project skeleton) is done; Phases 02–10
-(the actual crawler, data model, visual, CLI, tests, and GitHub-bootstrap
-packaging) are specified but not yet implemented — see
-[`spec/README.md`](spec/README.md#phases) for the live per-phase status and
+Working end to end. Phases 01–09 (URL scoping, fetch and link extraction, the
+graph model, the crawl orchestrator, persistence, the visual, the CLI, and the
+test suite) are complete; Phase 10 is packaging and the acceptance evidence —
+see [`spec/README.md`](spec/README.md#phases) for the live per-phase status and
 [`spec/agent-session-ledger.md`](spec/agent-session-ledger.md) for what the
 last session actually did.
 
@@ -35,6 +35,35 @@ bun run bin/sitemap-agent.ts render sitemap.json --out visual.html
 defaults; CLI flags take precedence. `visual.html` is a self-contained,
 offline interactive tree with filtering and per-page metadata.
 
+## Example run
+
+[`examples/fixture/`](examples/fixture) holds a committed end-to-end run: a
+small static site (`examples/fixture/site/`), the `sitemap.json` graph the CLI
+produced by crawling it over real HTTP, and the `visual.html` rendered from
+that graph. [`examples/fixture/README.md`](examples/fixture/README.md) has the
+exact commands to reproduce it.
+
+A node in `sitemap.json` looks like this:
+
+```json
+{
+  "url": "http://127.0.0.1:8787/b/1",
+  "path": "/b/1",
+  "depth": 2,
+  "status": 200,
+  "contentType": "text/html;charset=utf-8",
+  "title": "B / 1",
+  "discoveredAt": "2026-08-31T01:40:25.690Z",
+  "parents": ["http://127.0.0.1:8787/b", "http://127.0.0.1:8787/b/2"],
+  "children": ["http://127.0.0.1:8787/b", "http://127.0.0.1:8787/b/2"],
+  "error": null
+}
+```
+
+`visual.html` renders those nodes as a collapsible path tree with a filter box
+and a detail pane; the graph JSON is inlined into the file, so it opens offline
+from disk with no server and no network fetches.
+
 ## Get started (once cloned)
 
 ```bash
@@ -43,6 +72,14 @@ bun run typecheck
 bun test
 bunx --bun @khangtoh/specloop check     # validate the spec structure
 bunx --bun @khangtoh/specloop list-spec # see the ranked backlog
+```
+
+If `bun run typecheck` reports `TS2688: Cannot find type definition file for
+'bun-types'`, the install landed as links your filesystem can't resolve (seen
+on proot/Android and some network mounts). Reinstall with real files:
+
+```bash
+rm -rf node_modules && bun install --backend=copyfile
 ```
 
 Then hand the repo to an agent (Claude Code, Codex, or any CLI-capable

@@ -17,7 +17,7 @@ Phase 09 (tests green) — packaging assumes the product actually works.
 - [x] GitHub Actions workflow (`.github/workflows/ci.yml`): on push/PR, run
       `bun install`, `bun run typecheck`, `bun test`, and `specloop check`
       (this repo's own `spec/` must stay green in CI, not just locally).
-- [ ] End-to-end example run committed as evidence: crawl a small public or
+- [x] End-to-end example run committed as evidence: crawl a small public or
       fixture site, commit (or link to, if large) the resulting
       `sitemap.json` and `visual.html` under an `examples/` directory,
       referenced from the README.
@@ -37,3 +37,29 @@ Phase 09 (tests green) — packaging assumes the product actually works.
 - README, license, ignores, CI, and local fixture artifacts are present.
 - Blocked from the required commit/clean-clone acceptance evidence because
   this supplied workspace has no `.git` metadata or remote clone source.
+
+### 2026-08-31
+
+- The 2026-08-30 blocker is gone: the workspace is now a real Git repository
+  (branch `master`, two commits), so commit-based evidence is possible. There
+  is still no `origin` remote, so clean-clone proof is taken against the local
+  repository path rather than a GitHub URL.
+- The previous `examples/fixture/sitemap.json` was hand-authored, not a run
+  artifact (`durationMs: 1`, a round `generatedAt`), so it could not serve as
+  end-to-end evidence. Replaced with a real run: `examples/fixture/site/` is a
+  small static fixture site, `examples/fixture/serve.ts` serves it, and the
+  committed `sitemap.json`/`visual.html` are what the CLI actually produced
+  crawling it over HTTP — `Pages: 7, Max depth: 2, Errors: 0`, exit 0.
+- That run also demonstrates the Phase 02/03 rules against a live server:
+  `/private/secret` was skipped per `robots.txt`, the off-domain and `mailto:`
+  links were dropped, `?utm_source=` was stripped so `/b/2` stayed one node,
+  and the `/#top` fragment link deduped onto `/`.
+- `.gitignore` ignored `examples/*/sitemap.json` and `examples/*/visual.html`
+  while both were force-added — the example evidence was one `git add` away
+  from silently not existing for a cloner. Added explicit negations.
+- Removed the tracked `sitemap-agent.zip`: a stale snapshot of the repo at
+  scaffold state, referenced by nothing. Recoverable from Git history.
+- Environment note (not a project defect): on this host `bun install` produces
+  a `node_modules/bun-types` whose files are unresolvable link stubs, so
+  `bun run typecheck` fails `TS2688`. `bun install --backend=copyfile` fixes
+  it and `tsc --noEmit` is then clean. Documented in the README.

@@ -3,5 +3,7 @@ node_modules/
 sitemap.json
 visual.html
 *.checkpoint.json
-examples/*/sitemap.json
-examples/*/visual.html
+
+# The committed example run is evidence, not a local build output.
+!examples/fixture/sitemap.json
+!examples/fixture/visual.html

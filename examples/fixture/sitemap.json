@@ -1,1 +1,140 @@
-{"baseDomain":"fixture.local","startUrl":"http://fixture.local/","generatedAt":"2026-08-30T00:00:00.000Z","crawlMeta":{"maxDepth":2,"maxPages":null,"durationMs":1,"pageCount":3,"errorCount":0},"nodes":{"http://fixture.local/":{"url":"http://fixture.local/","path":"/","depth":0,"status":200,"contentType":"text/html","title":"Root","discoveredAt":"2026-08-30T00:00:00.000Z","parents":[],"children":["http://fixture.local/a","http://fixture.local/b"],"error":null},"http://fixture.local/a":{"url":"http://fixture.local/a","path":"/a","depth":1,"status":200,"contentType":"text/html","title":"A","discoveredAt":"2026-08-30T00:00:00.000Z","parents":["http://fixture.local/"],"children":[],"error":null},"http://fixture.local/b":{"url":"http://fixture.local/b","path":"/b","depth":1,"status":200,"contentType":"text/html","title":"B","discoveredAt":"2026-08-30T00:00:00.000Z","parents":["http://fixture.local/"],"children":[],"error":null}}}
+{
+  "baseDomain": "127.0.0.1",
+  "crawlMeta": {
+    "durationMs": 18,
+    "errorCount": 0,
+    "maxDepth": 3,
+    "maxPages": null,
+    "pageCount": 7
+  },
+  "generatedAt": "2026-08-31T01:40:25.669Z",
+  "nodes": {
+    "http://127.0.0.1:8787/": {
+      "children": [
+        "http://127.0.0.1:8787/a",
+        "http://127.0.0.1:8787/b",
+        "http://127.0.0.1:8787/about",
+        "http://127.0.0.1:8787/"
+      ],
+      "contentType": "text/html;charset=utf-8",
+      "depth": 0,
+      "discoveredAt": "2026-08-31T01:40:25.676Z",
+      "error": null,
+      "parents": [
+        "http://127.0.0.1:8787/",
+        "http://127.0.0.1:8787/a",
+        "http://127.0.0.1:8787/b",
+        "http://127.0.0.1:8787/about"
+      ],
+      "path": "/",
+      "status": 200,
+      "title": "Fixture Site — Home",
+      "url": "http://127.0.0.1:8787/"
+    },
+    "http://127.0.0.1:8787/a": {
+      "children": [
+        "http://127.0.0.1:8787/",
+        "http://127.0.0.1:8787/a/1"
+      ],
+      "contentType": "text/html;charset=utf-8",
+      "depth": 1,
+      "discoveredAt": "2026-08-31T01:40:25.680Z",
+      "error": null,
+      "parents": [
+        "http://127.0.0.1:8787/",
+        "http://127.0.0.1:8787/a/1"
+      ],
+      "path": "/a",
+      "status": 200,
+      "title": "Section A",
+      "url": "http://127.0.0.1:8787/a"
+    },
+    "http://127.0.0.1:8787/a/1": {
+      "children": [
+        "http://127.0.0.1:8787/a"
+      ],
+      "contentType": "text/html;charset=utf-8",
+      "depth": 2,
+      "discoveredAt": "2026-08-31T01:40:25.688Z",
+      "error": null,
+      "parents": [
+        "http://127.0.0.1:8787/a"
+      ],
+      "path": "/a/1",
+      "status": 200,
+      "title": "A / 1",
+      "url": "http://127.0.0.1:8787/a/1"
+    },
+    "http://127.0.0.1:8787/about": {
+      "children": [
+        "http://127.0.0.1:8787/"
+      ],
+      "contentType": "text/html;charset=utf-8",
+      "depth": 1,
+      "discoveredAt": "2026-08-31T01:40:25.685Z",
+      "error": null,
+      "parents": [
+        "http://127.0.0.1:8787/"
+      ],
+      "path": "/about",
+      "status": 200,
+      "title": "About",
+      "url": "http://127.0.0.1:8787/about"
+    },
+    "http://127.0.0.1:8787/b": {
+      "children": [
+        "http://127.0.0.1:8787/",
+        "http://127.0.0.1:8787/b/1",
+        "http://127.0.0.1:8787/b/2"
+      ],
+      "contentType": "text/html;charset=utf-8",
+      "depth": 1,
+      "discoveredAt": "2026-08-31T01:40:25.683Z",
+      "error": null,
+      "parents": [
+        "http://127.0.0.1:8787/",
+        "http://127.0.0.1:8787/b/1"
+      ],
+      "path": "/b",
+      "status": 200,
+      "title": "Section B",
+      "url": "http://127.0.0.1:8787/b"
+    },
+    "http://127.0.0.1:8787/b/1": {
+      "children": [
+        "http://127.0.0.1:8787/b",
+        "http://127.0.0.1:8787/b/2"
+      ],
+      "contentType": "text/html;charset=utf-8",
+      "depth": 2,
+      "discoveredAt": "2026-08-31T01:40:25.690Z",
+      "error": null,
+      "parents": [
+        "http://127.0.0.1:8787/b",
+        "http://127.0.0.1:8787/b/2"
+      ],
+      "path": "/b/1",
+      "status": 200,
+      "title": "B / 1",
+      "url": "http://127.0.0.1:8787/b/1"
+    },
+    "http://127.0.0.1:8787/b/2": {
+      "children": [
+        "http://127.0.0.1:8787/b/1"
+      ],
+      "contentType": "text/html;charset=utf-8",
+      "depth": 2,
+      "discoveredAt": "2026-08-31T01:40:25.691Z",
+      "error": null,
+      "parents": [
+        "http://127.0.0.1:8787/b",
+        "http://127.0.0.1:8787/b/1"
+      ],
+      "path": "/b/2",
+      "status": 200,
+      "title": "B / 2",
+      "url": "http://127.0.0.1:8787/b/2"
+    }
+  },
+  "startUrl": "http://127.0.0.1:8787/"
+}
